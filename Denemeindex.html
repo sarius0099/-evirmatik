@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çeviri Uygulaması</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Çeviri Uygulamasına Hoş Geldiniz!</h1>
+        </header>
+
+        <main>
+            <label for="inputText">Çevirmek istediğiniz metni girin:</label>
+            <textarea id="inputText" placeholder="Metninizi buraya yazın..."></textarea>
+
+            <label for="languageSelect">Hedef Dili Seçin:</label>
+            <select id="languageSelect">
+                <option value="en">İngilizce</option>
+                <option value="es">İspanyolca</option>
+                <option value="fr">Fransızca</option>
+                <option value="de">Almanca</option>
+                <option value="it">İtalyanca</option>
+                <option value="pl">Polonyaca</option>
+            </select>
+
+            <button onclick="translateText()">Çevir</button>
+
+            <div id="outputContainer" class="hidden">
+                <h2>Çevrilen Metin:</h2>
+                <p id="outputText"></p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Çeviri Uygulaması</p>
+        </footer>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
