@@ -11,12 +11,12 @@ async function translateText() {
         return;
     }
 
-    const apiUrl = 'https://libretranslate.de/translate'; // LibreTranslate API URL'si
+    const apiUrl = 'https://libretranslate.de/translate';
     const params = {
-        q: inputText,  // Çevrilecek metin
-        source: 'auto',  // Kaynak dilini otomatik algıla
-        target: selectedLanguage,  // Hedef dil
-        format: 'text'  // Çıktı formatı
+        q: inputText,
+        source: 'auto',
+        target: selectedLanguage,
+        format: 'text'
     };
 
     try {
@@ -25,20 +25,24 @@ async function translateText() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(params),  // Parametreleri JSON olarak gönderiyoruz
+            body: JSON.stringify(params),
         });
 
-        const data = await response.json();
-
-        if (data.error) {
-            alert("Hata: " + data.error.message);
-            return;
+        if (!response.ok) {
+            throw new Error(`HTTP hata: ${response.status}`);
         }
 
-        // Çevrilen metni ekrana yazdır
-        outputText.innerText = data.translatedText;
-        outputContainer.classList.remove("hidden");
+        const data = await response.json();
+        console.log(data); // API yanıtını kontrol edin
+
+        if (data.translatedText) {
+            outputText.innerText = data.translatedText;
+            outputContainer.classList.remove("hidden");
+        } else {
+            alert("Çeviri başarısız oldu. Yanıtı kontrol edin.");
+        }
     } catch (error) {
         alert("Bir hata oluştu: " + error.message);
     }
 }
+    
