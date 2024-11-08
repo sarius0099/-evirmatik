@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Çeviri Uygulaması</title>
+    <title>Yapay Zeka Destekli Çeviri Uygulaması</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,12 +18,12 @@
 
             <label for="languageSelect">Hedef Dili Seçin:</label>
             <select id="languageSelect">
-                <option value="en">İngilizce</option>
-                <option value="es">İspanyolca</option>
-                <option value="fr">Fransızca</option>
-                <option value="de">Almanca</option>
-                <option value="it">İtalyanca</option>
-                <option value="pl">Polonyaca</option>
+                <option value="English">İngilizce</option>
+                <option value="Spanish">İspanyolca</option>
+                <option value="French">Fransızca</option>
+                <option value="German">Almanca</option>
+                <option value="Italian">İtalyanca</option>
+                <option value="Polish">Polonyaca</option>
             </select>
 
             <button onclick="translateText()">Çevir</button>
@@ -46,26 +46,24 @@
             const outputContainer = document.getElementById('outputContainer');
             const outputText = document.getElementById('outputText');
 
-            // Eğer kullanıcı boş metin girerse uyarı göster
             if (inputText.trim() === "") {
                 alert("Lütfen çevirmek için bir metin girin.");
                 return;
             }
 
-            const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=tr|${selectedLanguage}`;
-
             try {
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP hata: ${response.status}`);
-                }
+                const response = await fetch('http://localhost:3000/translate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: inputText, targetLanguage: selectedLanguage }),
+                });
 
                 const data = await response.json();
-                console.log(data); // API yanıtını kontrol edin
 
-                if (data.responseData && data.responseData.translatedText) {
-                    outputText.innerText = data.responseData.translatedText;
+                if (data.translatedText) {
+                    outputText.innerText = data.translatedText;
                     outputContainer.classList.remove("hidden");
                 } else {
                     alert("Çeviri başarısız oldu. Yanıtı kontrol edin.");
