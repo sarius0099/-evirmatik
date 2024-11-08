@@ -39,6 +39,41 @@
         </footer>
     </div>
 
-    <script src="scripts.js"></script>
+    <script>
+        async function translateText() {
+            const inputText = document.getElementById('inputText').value;
+            const selectedLanguage = document.getElementById('languageSelect').value;
+            const outputContainer = document.getElementById('outputContainer');
+            const outputText = document.getElementById('outputText');
+
+            // Eğer kullanıcı boş metin girerse uyarı göster
+            if (inputText.trim() === "") {
+                alert("Lütfen çevirmek için bir metin girin.");
+                return;
+            }
+
+            const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=tr|${selectedLanguage}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP hata: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log(data); // API yanıtını kontrol edin
+
+                if (data.responseData && data.responseData.translatedText) {
+                    outputText.innerText = data.responseData.translatedText;
+                    outputContainer.classList.remove("hidden");
+                } else {
+                    alert("Çeviri başarısız oldu. Yanıtı kontrol edin.");
+                }
+            } catch (error) {
+                alert("Bir hata oluştu: " + error.message);
+            }
+        }
+    </script>
 </body>
 </html>
